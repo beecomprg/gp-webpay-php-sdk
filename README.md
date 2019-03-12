@@ -15,9 +15,9 @@ $ composer require adamstipak/webpay-php dev-master
 
 ```php
 $signer = new \AdamStipak\Webpay\Signer(
-  $privateKeyFilepath,    // Path of private key.
+  $privateKeyFilepath,    // String private key.
   $privateKeyPassword,    // Password for private key.
-  $publicKeyFilepath      // Path of public key.
+  $publicKeyFilepath      // String public key.
 );
     
 $api = new \AdamStipak\Webpay\Api(
@@ -62,21 +62,4 @@ catch (Exception $e) {
 }
 
 ```
- 
-##Development
-
-GP Webpay PHP SDK is developed in [Docker](https://docker.com) container via `docker-compose` command.
-
-Example:  
-```sh
-$ docker-compose run --rm default install  # install deps via composer
-$ docker-compose run --rm default  # runs tests in container
-```
-
-Attach to container:  
-```sh
-$ docker-compose run --rm default bash # runs bash in container and attach tty
-```
- 
- 
  

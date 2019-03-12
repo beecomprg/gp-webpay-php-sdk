@@ -1,5 +1,5 @@
 {
-  "name": "adamstipak/webpay-php",
+  "name": "beecomprg/webpay-php",
   "description": "GP Webpay API Wrapper",
   "type": "library",
   "keywords": ["webpay", "php"],
@@ -7,8 +7,8 @@
   "homepage": "https://github.com/newPOPE/webpay-php",
   "authors": [
     {
-      "name": "Adam Štipák",
-      "homepage": "http://newpope.org"
+      "name": "Lukas Beranek",
+      "homepage": "https://www.beecom.io"
     }
   ],
   "autoload": {

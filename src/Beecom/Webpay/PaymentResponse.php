@@ -1,6 +1,6 @@
 <?php
 
-namespace AdamStipak\Webpay;
+namespace Beecom\Webpay;
 
 class PaymentResponse {
 

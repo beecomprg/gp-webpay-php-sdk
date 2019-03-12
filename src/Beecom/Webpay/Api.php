@@ -1,6 +1,6 @@
 <?php
 
-namespace AdamStipak\Webpay;
+namespace Beecom\Webpay;
 
 class Api {
 
@@ -36,7 +36,7 @@ class Api {
   }
 
   /**
-   * @param \AdamStipak\Webpay\PaymentRequest $request
+   * @param \Beecom\Webpay\PaymentRequest $request
    * @return array
    */
   public function createPaymentParam (PaymentRequest $request): array {
@@ -56,24 +56,24 @@ class Api {
   public function verifyPaymentResponse (PaymentResponse $response) {
     // verify digest & digest1
     try {
+
+      // verify PRCODE and SRCODE
+      if (false !== $response->hasError()) {
+        throw new PaymentResponseException(
+          $response->getParams()['prcode'],
+          $response->getParams()['srcode'],
+          "Response has an error."
+        );
+      }
+
       $responseParams = $response->getParams();
       $this->signer->verify($responseParams, $response->getDigest());
 
       $responseParams['MERCHANTNUMBER'] = $this->merchantNumber;
-
-      $this->signer->verify($responseParams, $response->getDigest1());
+      return $this->signer->verify($responseParams, $response->getDigest1());
     }
     catch (SignerException $e) {
       throw new Exception($e->getMessage(), $e->getCode(), $e);
-    }
-
-    // verify PRCODE and SRCODE
-    if (false !== $response->hasError()) {
-      throw new PaymentResponseException(
-        $response->getParams()['prcode'],
-        $response->getParams()['srcode'],
-        "Response has an error."
-      );
     }
   }
 }

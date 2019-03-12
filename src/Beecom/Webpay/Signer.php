@@ -1,6 +1,6 @@
 <?php
 
-namespace AdamStipak\Webpay;
+namespace Beecom\Webpay;
 
 class Signer {
 
@@ -19,15 +19,14 @@ class Signer {
   /** @var resource */
   private $publicKeyResource;
 
+  /**
+   * Signer constructor.
+   *
+   * @param string $privateKey
+   * @param string $privateKeyPassword
+   * @param string $publicKey
+   */
   public function __construct (string $privateKey, string $privateKeyPassword, string $publicKey) {
-    if (!file_exists($privateKey) || !is_readable($privateKey)) {
-      throw new SignerException("Private key ({$privateKey}) not exists or not readable!");
-    }
-
-    if (!file_exists($publicKey) || !is_readable($publicKey)) {
-      throw new SignerException("Public key ({$publicKey}) not exists or not readable!");
-    }
-
     $this->privateKey = $privateKey;
     $this->privateKeyPassword = $privateKeyPassword;
     $this->publicKey = $publicKey;
@@ -42,9 +41,7 @@ class Signer {
       return $this->privateKeyResource;
     }
 
-    $key = file_get_contents($this->privateKey);
-
-    if (!($this->privateKeyResource = openssl_pkey_get_private($key, $this->privateKeyPassword))) {
+    if (!($this->privateKeyResource = openssl_pkey_get_private($this->privateKey, $this->privateKeyPassword))) {
       throw new SignerException("'{$this->privateKey}' is not valid PEM private key (or passphrase is incorrect).");
     }
 
@@ -91,11 +88,7 @@ class Signer {
       return $this->publicKeyResource;
     }
 
-    $fp = fopen($this->publicKey, "r");
-    $key = fread($fp, filesize($this->publicKey));
-    fclose($fp);
-
-    if (!($this->publicKeyResource = openssl_pkey_get_public($key))) {
+    if (!($this->publicKeyResource = openssl_pkey_get_public($this->publicKey))) {
       throw new SignerException("'{$this->publicKey}' is not valid PEM public key.");
     }
 
